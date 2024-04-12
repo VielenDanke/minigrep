@@ -1,3 +1,8 @@
+// documentation for the src/lib.rs instead of anything which goes after the comment
+//! # minigrep
+//!
+//! `minigrep` is a lightweight analogue of `grep` to find a match in a file
+
 use std::{env, fs};
 use std::error::Error;
 
@@ -9,6 +14,16 @@ pub struct Config {
 
 impl Config {
     // if we return Result<Something, str> - str is always static
+    /// Build [Config] from arguments provided.
+    /// The function is expected arguments:
+    /// 1. Name of the program
+    /// 2. Query to find in file
+    /// 3. Filename to search in
+    ///
+    /// If IGNORE_CASE flag is present in environment the search ignore case will be applied
+    ///
+    /// # Exception
+    /// In case the arguments are not provided the [Err] with string is returned
     pub fn build(mut args: impl Iterator<Item=String>) -> Result<Config, &'static str> {
         args.next();
 
@@ -49,6 +64,23 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// Search for all lines in contents string containing query.
+/// Case sensitive.
+///
+/// # Examples
+///
+/// ```rust
+/// use minigrep::search;
+///
+/// let query = "duct";
+/// let contents = "\
+/// Rust:
+/// safe, fast, productive.
+/// Pick three.
+/// Duct tape.";
+///
+/// assert_eq!(vec!["safe, fast, productive."], search(query, contents));
+/// ```
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     contents
         .lines()
@@ -56,11 +88,28 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
         .collect()
 }
 
+/// Search for all lines in contents string containing query.
+/// Case insensitive.
+///
+/// # Examples
+///
+/// ```rust
+/// use minigrep::search_case_insensitive;
+///
+/// let query = "rUsT";
+/// let contents = "\
+/// Rust:
+/// safe, fast, productive.
+/// Pick three.
+/// Trust me.";
+///
+/// assert_eq!(vec!["Rust:", "Trust me."], search_case_insensitive(query, contents));
+/// ```
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let query = query.to_lowercase();
     contents
         .lines()
-        .filter(|l| l.to_lowercase().contains(query))
+        .filter(|l| l.to_lowercase().contains(&query.to_string()))
         .collect()
 }
 
