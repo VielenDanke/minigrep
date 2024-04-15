@@ -1,7 +1,7 @@
 // documentation for the src/lib.rs instead of anything which goes after the comment
 //! # minigrep
 //!
-//! `minigrep` is a lightweight analogue of `grep` to find a match in a file
+//! `minigrep-vielenkz` is a lightweight analogue of `grep` to find a match in a file
 
 use std::{env, fs};
 use std::error::Error;
@@ -70,7 +70,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 /// # Examples
 ///
 /// ```rust
-/// use minigrep::search;
+/// use minigrep_vielenkz::search;
 ///
 /// let query = "duct";
 /// let contents = "\
@@ -94,7 +94,7 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
 /// # Examples
 ///
 /// ```rust
-/// use minigrep::search_case_insensitive;
+/// use minigrep_vielenkz::search_case_insensitive;
 ///
 /// let query = "rUsT";
 /// let contents = "\

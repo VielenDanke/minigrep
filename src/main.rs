@@ -1,5 +1,5 @@
 use std::{env, process};
-use minigrep::Config;
+use minigrep_vielenkz::{Config, run};
 
 fn main() {
     let config = Config::build(env::args()).unwrap_or_else(|err| {
@@ -7,7 +7,7 @@ fn main() {
         process::exit(1);
     });
 
-    minigrep::run(config).unwrap_or_else(|err| {
+    run(config).unwrap_or_else(|err| {
         eprintln!("Application error: {err}");
         process::exit(1);
     });
